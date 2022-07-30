@@ -1,5 +1,5 @@
 ---
-- name: Install virtualization packages using APT
+- name: Uninstall Gnome Boxes if installed through APT
   become: true
   ansible.builtin.apt:
     pkg: gnome-boxes

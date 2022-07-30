@@ -1,0 +1,16 @@
+---
+- name: Build pinned apps list
+  ansible.builtin.set_fact:
+    pinned_apps_list: "{{ pinned_apps_list | default([]) + pinned_apps[category] | default([]) }}"
+  with_items: "{{ pinned_apps_order }}"
+  loop_control:
+    loop_var: category
+
+- name: Append .desktop to list of pinned apps
+  ansible.builtin.set_fact:
+    pinned_apps_list: "{{ pinned_apps_list | product(['.desktop']) | map('join') | list }}"
+
+- name: Set pinned apps with dconf
+  community.general.dconf:
+    key: /org/gnome/shell/favorite-apps
+    value: "{{ pinned_apps_list }}"
