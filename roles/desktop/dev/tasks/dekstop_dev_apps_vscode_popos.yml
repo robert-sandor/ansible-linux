@@ -1,0 +1,6 @@
+---
+- name: Install Chrome with APT
+  become: true
+  ansible.builtin.apt:
+    name: code
+    state: latest

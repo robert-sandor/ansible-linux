@@ -1,0 +1,21 @@
+---
+- name: Ensure ~/.ssh folder exists
+  ansible.builtin.file:
+    path: ~{{ ansible_facts.user_id }}/.ssh
+    state: directory
+    mode: 0755
+
+- name: Ensure SSH key pair is present
+  community.crypto.openssh_keypair:
+    path: ~{{ ansible_facts.user_id }}/.ssh/id
+    type: ed25519
+    mode: 0600
+  register: ssh_keys
+  notify: register_ssh_key
+
+- name: Add public key to github
+  community.general.github_key:
+    name: "{{ ansible_facts.user_id }}@{{ ansible_facts.hostname }}"
+    pubkey: "{{ ssh_keys.public_key }}"
+    token: "{{ github_access_token }}"
+  when: github_access_token is defined

@@ -1,0 +1,8 @@
+---
+- name: Install flatpak packages
+  become: true
+  community.general.flatpak:
+    name: '{{ flatpak_package }}'
+  with_items: '{{ dev_flatpak_apps }}'
+  loop_control:
+    loop_var: flatpak_package

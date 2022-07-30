@@ -1,0 +1,4 @@
+---
+- name: Set base pinned apps
+  ansible.builtin.set_fact:
+    pinned_apps: "{ 'base': {{ base_pinned_apps }} }"

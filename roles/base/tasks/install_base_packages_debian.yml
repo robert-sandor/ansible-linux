@@ -1,0 +1,6 @@
+---
+- name: Install base packages using APT
+  become: true
+  ansible.builtin.apt:
+    pkg: "{{ base_packages + apt_base_packages }}"
+    state: latest

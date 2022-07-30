@@ -1,0 +1,4 @@
+---
+- name: Set virt pinned apps
+  ansible.builtin.set_fact:
+    pinned_apps: "{{ pinned_apps | combine({ 'virt': virt_pinned_apps }) }}"

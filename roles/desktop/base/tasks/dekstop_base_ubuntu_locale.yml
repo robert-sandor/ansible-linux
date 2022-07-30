@@ -1,0 +1,8 @@
+---
+- name: Remove locale lines from /etc/default/locale
+  become: true
+  ansible.builtin.lineinfile:
+    path: /etc/default/locale
+    regexp: '^LC_.*=.*$'
+    state: absent
+  notify: reboot

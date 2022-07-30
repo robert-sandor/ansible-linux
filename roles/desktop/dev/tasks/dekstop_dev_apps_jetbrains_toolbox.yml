@@ -1,0 +1,59 @@
+---
+- name: Check if jetbrains-toolbox is already installed
+  ansible.builtin.stat:
+    path: ~{{ ansible_facts.user_id }}/apps/jetbrains-toolbox/jetbrains-toolbox
+  register: jb_toolbox_stat
+
+- name: Download latest Jetbrains toolbox
+  when: not jb_toolbox_stat.stat.exists
+  block:
+    - name: Clean existing installation
+      ansible.builtin.file:
+        path: ~{{ ansible_facts.user_id }}/apps/jetbrains-toolbox
+        state: absent
+
+    - name: Fetch most recent release of Jetbrains Toolbox
+      ansible.builtin.uri:
+        method: GET
+        url: https://data.services.jetbrains.com/products/releases?code=TBA&latest=true&type=release
+      register: _toolbox_response
+
+    - name: Extract link to latest release
+      ansible.builtin.set_fact:
+        _toolbox_download_url: "{{ _url }}"
+        _toolbox_file_name: "{{ (_url | split('/'))[-1] }}"
+        _toolbox_dir_name: "{{ (_url | split('/'))[-1] | replace('.tar.gz', '') }}"
+      vars:
+        _url: "{{ _toolbox_response.json | json_query('TBA[0].downloads.linux.link') }}"
+
+    - name: Create apps folder in home if not already there
+      ansible.builtin.file:
+        path: ~{{ ansible_facts.user_id }}/apps
+        state: directory
+        mode: 0755
+
+    - name: Download latest release of Jetbrains Toolbox
+      ansible.builtin.get_url:
+        url: "{{ _toolbox_download_url }}"
+        dest: ~{{ ansible_facts.user_id }}/apps/{{ _toolbox_file_name }}
+        mode: 0755
+
+    - name: Extract archive
+      ansible.builtin.unarchive:
+        src: ~{{ ansible_facts.user_id }}/apps/{{ _toolbox_file_name }}
+        dest: ~{{ ansible_facts.user_id }}/apps
+        remote_src: true
+
+    - name: Rename folder
+      ansible.builtin.shell: >
+        mv
+        ~{{ ansible_facts.user_id }}/apps/{{ _toolbox_dir_name }}
+        ~{{ ansible_facts.user_id }}/apps/jetbrains-toolbox
+      args:
+        removes: ~{{ ansible_facts.user_id }}/apps/{{ _toolbox_dir_name }}
+        creates: ~{{ ansible_facts.user_id }}/apps/jetbrains-toolbox
+
+    - name: Remove archive
+      ansible.builtin.file:
+        path: ~{{ ansible_facts.user_id }}/apps/{{ _toolbox_file_name }}
+        state: absent

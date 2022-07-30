@@ -1,0 +1,7 @@
+---
+- name: Uninstall GNOME Boxes if installed through DNF
+  become: true
+  ansible.builtin.dnf:
+    name: gnome-boxes
+    state: absent
+    autoremove: true

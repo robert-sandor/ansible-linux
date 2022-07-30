@@ -1,0 +1,5 @@
+---
+- name: Set Yaru Dark as theme for gtk3 apps
+  community.general.dconf:
+    key: /org/gnome/desktop/interface/gtk-theme
+    value: "'Yaru-dark'"

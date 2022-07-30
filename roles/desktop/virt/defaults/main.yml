@@ -1,0 +1,4 @@
+---
+virt_pinned_apps:
+  - virt-manager
+  - org.gnome.Boxes

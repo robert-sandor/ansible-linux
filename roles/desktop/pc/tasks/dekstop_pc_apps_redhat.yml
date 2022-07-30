@@ -1,0 +1,9 @@
+---
+- name: Install base packages using DNF
+  become: true
+  ansible.builtin.dnf:
+    name: "{{ package }}"
+    state: latest
+  with_items: "{{ base_pc_packages }}"
+  loop_control:
+    loop_var: package

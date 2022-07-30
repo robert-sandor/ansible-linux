@@ -1,0 +1,25 @@
+---
+- name: Ensure docker group is present
+  become: true
+  ansible.builtin.group:
+    name: docker
+
+- name: Add user to docker group
+  become: true
+  ansible.builtin.user:
+    name: "{{ ansible_facts.user_id }}"
+    groups: docker
+    append: true
+
+- name: Add docker plugin to .zshrc
+  ansible.builtin.replace:
+    dest: "~{{ ansible_facts.user_id }}/.zshrc"
+    regexp: '^plugins=\(((?!.*\bdocker\b).*)\)$'
+    replace: 'plugins=(\1 docker)'
+
+- name: Enable docker daemon to run at boot
+  become: true
+  ansible.builtin.systemd:
+    name: docker
+    state: started
+    enabled: true

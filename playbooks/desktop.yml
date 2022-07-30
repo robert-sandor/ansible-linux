@@ -1,0 +1,36 @@
+---
+- hosts: desktop
+  roles:
+    - desktop/base
+
+- hosts: desktop_all
+  roles:
+    - desktop/pc
+    - desktop/dev
+    - desktop/virt
+    - desktop/work
+    - desktop/gaming
+
+- hosts: desktop_pc
+  roles:
+    - desktop/pc
+
+- hosts: desktop_dev
+  roles:
+    - desktop/dev
+
+- hosts: desktop_virt
+  roles:
+    - desktop/virt
+
+- hosts: desktop_work
+  roles:
+    - desktop/work
+
+- hosts: desktop_gaming
+  roles:
+    - desktop/gaming
+
+- hosts: desktop
+  roles:
+    - desktop/dock

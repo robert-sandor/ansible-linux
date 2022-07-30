@@ -1,0 +1,24 @@
+---
+dev_flatpak_apps:
+  - rest.insomnia.Insomnia
+  - com.getpostman.Postman
+
+dev_pinned_apps:
+  - code
+  - jetbrains-idea-ce
+  - jetbrains-pycharm-ce
+  - jetbrains-toolbox
+  - rest.insomnia.Insomnia
+  - com.getpostman.Postman
+
+vscode_extensions:
+  - ms-python.python
+  - ms-python.vscode-pylance
+  - ms-toolsai.jupyter
+  - ms-toolsai.jupyter-keymap
+  - ms-toolsai.jupyter-renderers
+  - ms-vscode-remote.remote-ssh
+  - ms-vscode-remote.remote-ssh-edit
+  - redhat.ansible
+  - redhat.vscode-yaml
+  - wholroyd.jinja

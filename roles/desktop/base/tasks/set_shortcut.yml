@@ -1,0 +1,15 @@
+---
+- name: Set name
+  community.general.dconf:
+    key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom{{ idx }}/name"
+    value: "'{{ shortcut.name }}'"
+
+- name: Set command
+  community.general.dconf:
+    key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom{{ idx }}/command"
+    value: "'{{ shortcut.command }}'"
+
+- name: Set binding
+  community.general.dconf:
+    key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom{{ idx }}/binding"
+    value: "'{{ shortcut.binding }}'"

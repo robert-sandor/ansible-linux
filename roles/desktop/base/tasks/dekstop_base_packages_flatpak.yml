@@ -1,0 +1,10 @@
+---
+- ansible.builtin.include_tasks: ./enable_flathub.yml
+
+- name: Install flatpak packages
+  become: true
+  community.general.flatpak:
+    name: '{{ flatpak_package }}'
+  with_items: '{{ flatpak_base_packages }}'
+  loop_control:
+    loop_var: flatpak_package

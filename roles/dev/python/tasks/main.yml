@@ -1,0 +1,32 @@
+---
+- ansible.builtin.include_tasks: "./install_python_build_deps_{{ ansible_facts.os_family | lower }}.yml"
+
+- name: Clone pyenv repo
+  ansible.builtin.git:
+    repo: https://github.com/pyenv/pyenv.git
+    dest: ~{{ ansible_facts.user_id }}/.pyenv
+
+- name: Setup pyenv
+  ansible.builtin.blockinfile:
+    path: "~{{ ansible_facts.user_id }}/{{ config_file }}"
+    create: true
+    owner: "{{ ansible_facts.user_uid }}"
+    group: "{{ ansible_facts.user_gid }}"
+    mode: 0644
+    marker: "# {mark} enable pyenv"
+    block: |
+      export PYENV_ROOT="$HOME/.pyenv"
+      command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+      eval "$(pyenv init -)"
+  loop_control:
+    loop_var: config_file
+  with_items:
+    - .zshrc
+    - .profile
+    - .zprofile
+
+- name: Add pyenv plugin to .zshrc
+  ansible.builtin.replace:
+    dest: "~{{ ansible_facts.user_id }}/.zshrc"
+    regexp: '^plugins=\(((?!.*\bpyenv\b).*)\)$'
+    replace: 'plugins=(\1 pyenv)'

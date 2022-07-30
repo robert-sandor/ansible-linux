@@ -1,0 +1,25 @@
+---
+- name: Set max icon size
+  community.general.dconf:
+    key: /org/gnome/shell/extensions/dash-to-dock/dash-max-icon-size
+    value: "36"
+
+- name: Set positioning to the left
+  community.general.dconf:
+    key: /org/gnome/shell/extensions/dash-to-dock/dock-position
+    value: "'LEFT'"
+
+- name: Set panel mode off
+  community.general.dconf:
+    key: /org/gnome/shell/extensions/dash-to-dock/extend-height
+    value: "false"
+
+- name: Set to not show mounts
+  community.general.dconf:
+    key: /org/gnome/shell/extensions/dash-to-dock/show-mounts
+    value: "false"
+
+- name: Set to not show thrash
+  community.general.dconf:
+    key: /org/gnome/shell/extensions/dash-to-dock/show-trash
+    value: "false"

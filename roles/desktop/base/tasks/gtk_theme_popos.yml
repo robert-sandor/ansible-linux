@@ -1,0 +1,5 @@
+---
+- name: Set Pop Dark as theme for gtk3 apps
+  community.general.dconf:
+    key: /org/gnome/desktop/interface/gtk-theme
+    value: "'Pop-dark'"

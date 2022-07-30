@@ -1,0 +1,23 @@
+---
+- name: Set keyboard shortcuts
+  include_tasks: set_shortcut.yml
+  vars:
+    shortcut: "{{ item }}"
+    idx: "{{ idx }}"
+  with_items: "{{ keyboard_shortcuts }}"
+  loop_control:
+    index_var: idx
+
+- name: Build bindings array
+  ansible.builtin.set_fact:
+    custom_keyboard_shortcuts: >
+      {{ custom_keyboard_shortcuts | default([])
+      + [ '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom' + idx | string() + '/' ] }}
+  with_items: "{{ keyboard_shortcuts }}"
+  loop_control:
+    index_var: idx
+
+- name: Register bindings
+  community.general.dconf:
+    key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings"
+    value: "[{{ custom_keyboard_shortcuts | map('to_json') | join(', ') }}]"

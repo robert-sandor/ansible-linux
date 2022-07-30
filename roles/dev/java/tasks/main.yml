@@ -1,0 +1,47 @@
+---
+- name: Check if SDKMAN already installed
+  ansible.builtin.stat:
+    path: /home/{{ ansible_facts.user_id }}/.sdkman
+  register: sdkman_stat
+
+- name: Install SDKMAN
+  when: not sdkman_stat.stat.exists
+  block:
+    - name: Download SDKMAN install script
+      ansible.builtin.get_url:
+        url: https://get.sdkman.io
+        dest: /tmp/sdkman_install.sh
+        mode: 0755
+
+    - name: Run SDKMAN install
+      ansible.builtin.shell: bash /tmp/sdkman_install.sh
+      changed_when: true
+
+    - name: Remove temp install file
+      ansible.builtin.file:
+        path: /tmp/sdkman_install.sh
+        state: absent
+
+- name: Make SDKMAN auto answer install and update queries
+  ansible.builtin.lineinfile:
+    path: /home/{{ ansible_facts.user_id }}/.sdkman/etc/config
+    regexp: '^sdkman_auto_answer='
+    line: 'sdkman_auto_answer=true'
+
+- name: Make SDKMAN selfupdate
+  ansible.builtin.lineinfile:
+    path: /home/{{ ansible_facts.user_id }}/.sdkman/etc/config
+    regexp: '^sdkman_selfupdate_enable='
+    line: 'sdkman_selfupdate_enable=true'
+
+- name: Install SDKMAN candidates
+  ansible.builtin.shell: >
+    . /home/{{ ansible_facts.user_id }}/.sdkman/bin/sdkman-init.sh &&
+    sdk install {{ item.name }} {{ item.version | default('') }}
+  with_items: "{{ sdkman_install_candidates }}"
+  when: sdkman_install_candidates is defined
+  args:
+    executable: /bin/bash
+  register: sdkman_install
+  changed_when: >
+    'is already installed' not in sdkman_install.stdout

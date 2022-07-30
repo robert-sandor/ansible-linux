@@ -1,0 +1,4 @@
+---
+- name: Remove snapd
+  when: "'ubuntu' in ansible_facts.distribution | lower"
+  ansible.builtin.include_tasks: remove_snapd.yml

@@ -1,0 +1,31 @@
+---
+flatpak_base_packages:
+  - com.mattjakeman.ExtensionManager
+  - dev.geopjr.Collision
+  - org.gnome.World.PikaBackup
+
+base_packages:
+  - python3-psutil
+  - gnome-console
+  - gnome-tweaks
+
+keyboard_shortcuts:
+  - name: Terminal
+    command: kgx
+    binding: <Super>t
+  - name: Files
+    command: nautilus
+    binding: <Super>f
+  - name: Browser
+    command: firefox
+    binding: <Super>b
+
+uninstall_packages:
+  - libreoffice-*
+
+base_pinned_apps:
+  - org.gnome.Console
+  - org.gnome.Nautilus
+
+base_background_color: "#222222"
+wallpaper_url:

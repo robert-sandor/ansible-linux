@@ -1,0 +1,6 @@
+inventory
+secrets.yml
+pass
+vmup.sh
+vmdown.sh
+vmrevert.sh

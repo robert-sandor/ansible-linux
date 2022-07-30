@@ -1,0 +1,23 @@
+---
+- name: Configure DNF package manager
+  block:
+    - name: Enable fastest mirrors
+      become: true
+      ansible.builtin.lineinfile:
+        path: /etc/dnf/dnf.conf
+        regexp: '^fastestmirror='
+        line: fastestmirror=1
+
+    - name: Set max parallel downloads to 10
+      become: true
+      ansible.builtin.lineinfile:
+        path: /etc/dnf/dnf.conf
+        regexp: '^max_parallel_downloads='
+        line: max_parallel_downloads=10
+
+    - name: Enable deltarpm
+      become: true
+      ansible.builtin.lineinfile:
+        path: /etc/dnf/dnf.conf
+        regexp: '^deltarpm='
+        line: deltarpm=true

@@ -1,0 +1,33 @@
+---
+pc_flatpak_apps:
+  - com.bitwarden.desktop
+  - com.discordapp.Discord
+  - com.github.tchx84.Flatseal
+  - com.logseq.Logseq
+  - com.obsproject.Studio
+  - com.spotify.Client
+  - com.usebottles.bottles
+  - de.haeckerfelix.Fragments
+  - de.haeckerfelix.Shortwave
+  - io.github.celluloid_player.Celluloid
+  - io.github.mimbrero.WhatsAppDesktop
+  - org.gimp.GIMP
+  - org.gnome.Boxes
+  - org.gnome.SoundRecorder
+  - org.onlyoffice.desktopeditors
+  - org.raspberrypi.rpi-imager
+  - org.signal.Signal
+  - org.videolan.VLC
+
+base_pc_packages:
+  - pavucontrol
+  - v4l-utils
+
+pc_pinned_apps:
+  - brave-browser
+  - org.signal.Signal
+  - io.github.mimbrero.WhatsAppDesktop
+  - com.discordapp.Discord
+  - com.spotify.Client
+  - "{{ 'org.mozilla.firefox' if 'ubuntu' in ansible_facts.distribution | lower else 'firefox' }}"
+  - google-chrome

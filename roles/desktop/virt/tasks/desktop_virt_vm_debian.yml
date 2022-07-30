@@ -1,0 +1,9 @@
+---
+- name: Install virtualization packages using APT
+  become: true
+  ansible.builtin.apt:
+    pkg:
+      - qemu-kvm
+      - libvirt-daemon-system
+      - virt-manager
+    state: latest

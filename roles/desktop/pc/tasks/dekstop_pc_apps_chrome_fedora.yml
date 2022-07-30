@@ -1,0 +1,22 @@
+---
+- name: Import GPG key for Chrome
+  become: true
+  ansible.builtin.rpm_key:
+    key: https://dl.google.com/linux/linux_signing_key.pub
+
+- name: Add Chrome Repository
+  become: true
+  ansible.builtin.yum_repository:
+    enabled: true
+    file: google-chrome
+    name: google-chrome
+    description: Google Chrome Browser
+    baseurl: https://dl.google.com/linux/chrome/rpm/stable/x86_64
+    gpgkey: https://dl.google.com/linux/linux_signing_key.pub
+    gpgcheck: true
+
+- name: Install Chrome with DNF
+  become: true
+  ansible.builtin.dnf:
+    name: google-chrome-stable
+    state: latest

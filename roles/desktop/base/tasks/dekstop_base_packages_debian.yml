@@ -1,0 +1,14 @@
+---
+- name: Install flatpak using APT
+  become: true
+  ansible.builtin.apt:
+    pkg:
+      - flatpak
+    state: latest
+  notify: reboot
+
+- name: Install base packages using APT
+  become: true
+  ansible.builtin.apt:
+    pkg: "{{ base_packages }}"
+    state: latest

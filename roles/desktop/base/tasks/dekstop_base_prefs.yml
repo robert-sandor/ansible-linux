@@ -1,0 +1,45 @@
+---
+- ansible.builtin.include_tasks: gtk_theme_{{ ansible_facts.distribution | lower | regex_replace('[^a-z]', '') }}.yml
+
+- name: Set Dark theme as preference for gtk4 apps
+  community.general.dconf:
+    key: /org/gnome/desktop/interface/color-scheme
+    value: "'prefer-dark'"
+
+- name: Center new windows by default
+  community.general.dconf:
+    key: /org/gnome/mutter/center-new-windows
+    value: "true"
+
+- name: Set flat acceleration profile for mouse
+  community.general.dconf:
+    key: /org/gnome/desktop/peripherals/mouse/accel-profile
+    value: "'flat'"
+
+- name: Set screen blank time
+  community.general.dconf:
+    key: /org/gnome/desktop/session/idle-delay
+    value: "uint32 {{ screen_blank_mins | default(0) | int * 60 }}"
+
+- name: Set no autorun
+  community.general.dconf:
+    key: /org/gnome/desktop/media-handling/autorun-never
+    value: "true"
+
+- name: Enable night light
+  community.general.dconf:
+    key: "/org/gnome/settings-daemon/plugins/color/night-light-enabled"
+    value: "true"
+
+- name: Enable automatic schedule
+  community.general.dconf:
+    key: "/org/gnome/settings-daemon/plugins/color/night-light-schedule-automatic"
+    value: "true"
+
+- name: Set temperature to 3700K
+  community.general.dconf:
+    key: "/org/gnome/settings-daemon/plugins/color/night-light-temperature"
+    value: "uint32 3700"
+
+- ansible.builtin.import_tasks: set_shortcuts.yml
+- ansible.builtin.import_tasks: set_wallpaper.yml

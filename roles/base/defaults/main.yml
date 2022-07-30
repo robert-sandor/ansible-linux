@@ -1,0 +1,19 @@
+---
+base_packages:
+  - git
+  - curl
+  - zsh
+  - bat
+  - micro
+  - htop
+  - zip
+  - unzip
+  - ncdu
+  - jq
+
+dnf_base_packages:
+  - dnf-plugins-core
+
+apt_base_packages: []
+
+zsh_theme: candy

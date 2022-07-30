@@ -1,0 +1,7 @@
+---
+- name: Update packages using APT
+  become: true
+  ansible.builtin.apt:
+    name: "*"
+    state: latest
+  notify: reboot

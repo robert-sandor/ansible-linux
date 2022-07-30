@@ -1,0 +1,15 @@
+---
+- name: Install flatpak using DNF
+  become: true
+  ansible.builtin.dnf:
+    name: flatpak
+    state: latest
+
+- name: Install base packages using DNF
+  become: true
+  ansible.builtin.dnf:
+    name: "{{ package }}"
+    state: latest
+  with_items: "{{ base_packages }}"
+  loop_control:
+    loop_var: package

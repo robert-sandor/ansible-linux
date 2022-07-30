@@ -1,0 +1,23 @@
+# ZSH configuration
+alias zshconf="micro ~/.zshrc"
+alias zshsource="source ~/.zshrc"
+alias zshupd="cd ~/.oh-my-zsh && git pull && cd -"
+
+# SSH configuration
+alias sshconf="micro ~/.ssh/config"
+alias sshknown="micro ~/.ssh/known_hosts"
+alias sshpubkey="cat ~/.ssh/id.pub"
+
+# Package updates
+{% if 'redhat' in ansible_facts.os_family | lower %}
+alias update="sudo dnf upgrade --refresh"
+{% endif %}
+{% if 'debian' in ansible_facts.os_family | lower %}
+alias update="sudo apt update && sudo apt full-upgrade"
+{% endif %}
+
+# Use bat instead of cat
+alias cat="{{ 'bat' if 'fedora' in ansible_facts.distribution else 'batcat' }}"
+
+# Use ncdu instead of du
+alias du="ncdu"

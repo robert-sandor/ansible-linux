@@ -1,0 +1,18 @@
+---
+- hosts: dev
+  roles:
+    - dev/ansible
+    - dev/java
+    - dev/python
+
+- hosts: dev_java
+  roles:
+    - dev/java
+
+- hosts: dev_python
+  roles:
+    - dev/python
+
+- hosts: dev_ansible
+  roles:
+    - dev/ansible

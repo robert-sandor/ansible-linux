@@ -1,0 +1,6 @@
+---
+- ansible.builtin.import_playbook: base.yml
+- ansible.builtin.import_playbook: docker.yml
+- ansible.builtin.import_playbook: virt.yml
+- ansible.builtin.import_playbook: dev.yml
+- ansible.builtin.import_playbook: desktop.yml

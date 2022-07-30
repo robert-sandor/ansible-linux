@@ -1,0 +1,23 @@
+---
+- name: Get Chrome signing key
+  become: true
+  ansible.builtin.get_url:
+    url: https://dl.google.com/linux/linux_signing_key.pub
+    dest: /etc/apt/trusted.gpg.d/google.asc
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Add Chrome Repository
+  become: true
+  ansible.builtin.apt_repository:
+    repo: deb [arch=amd64] https://dl.google.com/linux/chrome/deb/ stable main
+    state: present
+    update_cache: true
+    filename: google-chrome
+
+- name: Install Chrome with APT
+  become: true
+  ansible.builtin.apt:
+    name: google-chrome-stable
+    state: latest

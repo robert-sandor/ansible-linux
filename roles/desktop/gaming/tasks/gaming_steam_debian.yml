@@ -1,0 +1,6 @@
+---
+- name: Install steam
+  become: true
+  ansible.builtin.apt:
+    pkg: steam
+    state: latest

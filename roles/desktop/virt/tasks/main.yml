@@ -1,0 +1,5 @@
+---
+- ansible.builtin.include_tasks: desktop_virt_vm_{{ ansible_facts.os_family | lower }}.yml
+- ansible.builtin.import_tasks: desktop_virt_flatpak_boxes.yml
+- ansible.builtin.include_tasks: desktop_virt_uninstall_boxes_{{ ansible_facts.os_family | lower }}.yml
+- ansible.builtin.import_tasks: set_pinned_apps.yml

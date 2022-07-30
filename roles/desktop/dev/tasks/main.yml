@@ -1,0 +1,5 @@
+---
+- ansible.builtin.import_tasks: dekstop_dev_apps_vscode.yml
+- ansible.builtin.import_tasks: dekstop_dev_apps_jetbrains_toolbox.yml
+- ansible.builtin.import_tasks: dekstop_dev_apps_flatpak.yml
+- ansible.builtin.import_tasks: set_pinned_apps.yml

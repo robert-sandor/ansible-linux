@@ -1,0 +1,66 @@
+---
+- name: Install prerequisites using APT
+  become: true
+  ansible.builtin.apt:
+    pkg:
+      - ca-certificates
+      - curl
+      - gnupg
+      - lsb-release
+    state: latest
+
+- name: Ensure /etc/apt/keyrings exists
+  become: true
+  ansible.builtin.file:
+    path: /etc/apt/keyrings
+    state: directory
+    mode: 0755
+    owner: root
+    group: root
+
+- name: Check if docker GPG key exists
+  ansible.builtin.stat:
+    path: /etc/apt/keyrings/docker.gpg
+  register: docker_gpg_key_stat
+
+- name: Download Docker GPG key if doesn't exists
+  when: not docker_gpg_key_stat.stat.exists
+  block:
+    - name: Get GPG keys from Docker
+      ansible.builtin.get_url:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        dest: /tmp/docker_gpg_key
+        owner: "{{ ansible_facts.user_uid }}"
+        group: "{{ ansible_facts.user_gid }}"
+        mode: 0755
+
+    - name: Dearmor Docker key using gpg
+      become: true
+      ansible.builtin.shell: "cat /tmp/docker_gpg_key | gpg --dearmor -o /etc/apt/keyrings/docker.gpg"
+      changed_when: true
+
+    - name: Remove downloaded temp file
+      ansible.builtin.file:
+        path: /tmp/docker_gpg_key
+        state: absent
+
+- name: Add docker repository to APT sources
+  become: true
+  ansible.builtin.apt_repository:
+    update_cache: true
+    repo: >-
+      deb [arch={{ 'amd64' if 'x86_64' in ansible_facts.architecture else 'arm64' }}
+      signed-by=/etc/apt/keyrings/docker.gpg]
+      https://download.docker.com/linux/ubuntu {{ ansible_facts.distribution_release }} stable
+    state: present
+    filename: docker
+
+- name: Install docker using APT
+  become: true
+  ansible.builtin.apt:
+    pkg:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+      - docker-compose-plugin
+    state: latest

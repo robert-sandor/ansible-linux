@@ -1,0 +1,15 @@
+---
+- name: Enable non-free steam repo
+  become: true
+  community.general.ini_file:
+    dest: /etc/yum.repos.d/rpmfusion-nonfree-steam.repo
+    section: 'rpmfusion-nonfree-steam'
+    option: enabled
+    value: 1
+    mode: 0644
+
+- name: Install steam
+  become: true
+  ansible.builtin.dnf:
+    name: steam
+    state: latest

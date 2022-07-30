@@ -1,0 +1,6 @@
+---
+- name: Install virtualization group on fedora
+  become: true
+  ansible.builtin.dnf:
+    name: '@virtualization'
+    state: latest

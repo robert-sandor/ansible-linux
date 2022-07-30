@@ -1,0 +1,8 @@
+---
+- hosts: all
+  tasks:
+    - name: Remove locale lines from /etc/default/locale
+      ansible.builtin.shell: gnome-extensions list
+      register: output
+
+    - debug: msg={{ output }}

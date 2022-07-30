@@ -1,0 +1,25 @@
+---
+- name: Uninstall snapd
+  become: true
+  ansible.builtin.apt:
+    pkg:
+      - snapd
+      - gnome-software-plugin-snap
+    state: absent
+    purge: true
+
+- name: Remove user snap directory
+  ansible.builtin.file:
+    path: ~{{ ansible_facts.user_id }}/snap
+    state: absent
+
+- name: Remove cache directory for snap
+  become: true
+  ansible.builtin.file:
+    path: /var/cache/snapd
+    state: absent
+
+- name: Install firefox using flatpak
+  become: true
+  community.general.flatpak:
+    name: org.mozilla.firefox

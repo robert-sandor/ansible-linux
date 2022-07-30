@@ -1,0 +1,7 @@
+---
+- name: Uninstall packages using APT
+  become: true
+  ansible.builtin.apt:
+    pkg: "{{ uninstall_packages }}"
+    state: absent
+    autoremove: true

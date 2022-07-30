@@ -1,0 +1,4 @@
+---
+- name: Set pc pinned apps
+  ansible.builtin.set_fact:
+    pinned_apps: "{{ pinned_apps | combine({ 'gaming': gaming_pinned_apps }) }}"

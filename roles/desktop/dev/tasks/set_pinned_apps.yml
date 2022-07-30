@@ -1,0 +1,4 @@
+---
+- name: Set dev pinned apps
+  ansible.builtin.set_fact:
+    pinned_apps: "{{ pinned_apps | combine({ 'dev': dev_pinned_apps }) }}"

@@ -1,0 +1,14 @@
+---
+gaming_flatpak_apps:
+  - net.davidotek.pupgui2
+  - re.chiaki.Chiaki
+  - com.moonlight_stream.Moonlight
+  - com.heroicgameslauncher.hgl
+
+gaming_packages:
+  - mangohud
+  - goverlay
+  - gamemode
+
+gaming_pinned_apps:
+  - steam

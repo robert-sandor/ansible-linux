@@ -1,0 +1,7 @@
+---
+- name: Update packages using DNF
+  become: true
+  ansible.builtin.dnf:
+    name: "*"
+    state: latest
+  notify: reboot

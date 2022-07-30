@@ -1,0 +1,7 @@
+---
+- name: reboot
+  become: true
+  ansible.builtin.reboot:
+
+- name: register_ssh_key
+  ansible.builtin.shell: eval "$(ssh-agent -s)"; ssh-add ~{{ ansible_facts.user_id }}/.ssh/id

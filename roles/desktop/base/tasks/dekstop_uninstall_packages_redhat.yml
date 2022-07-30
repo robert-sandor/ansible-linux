@@ -1,0 +1,10 @@
+---
+- name: Uninstall packages using DNF
+  become: true
+  ansible.builtin.dnf:
+    name: "{{ package }}"
+    state: absent
+    autoremove: true
+  with_items: "{{ uninstall_packages }}"
+  loop_control:
+    loop_var: package

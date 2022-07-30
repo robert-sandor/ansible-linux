@@ -1,0 +1,61 @@
+---
+- name: Set color shading type
+  community.general.dconf:
+    key: '/org/gnome/desktop/background/color-shading-type'
+    value: "'solid'"
+
+- name: Set primary color
+  community.general.dconf:
+    key: '/org/gnome/desktop/background/primary-color'
+    value: "'{{ base_background_color }}'"
+
+- name: Set secondary color
+  community.general.dconf:
+    key: '/org/gnome/desktop/background/secondary-color'
+    value: "'{{ base_background_color }}'"
+
+- name: Set empty wallpaper
+  when: not wallpaper_url
+  block:
+    - name: Set empty for wallpaper
+      community.general.dconf:
+        key: '/org/gnome/desktop/background/picture-uri'
+        value: "''"
+
+    - name: Set empty for dark wallpaper
+      community.general.dconf:
+        key: '/org/gnome/desktop/background/picture-uri-dark'
+        value: "''"
+
+- name: Set wallpaper
+  when: wallpaper_url
+  block:
+    - name: Ensure wallpapers directory exists on host
+      ansible.builtin.file:
+        path: "~{{ ansible_facts.user_id }}/.local/share/backgrounds/"
+        state: directory
+        mode: 0755
+
+    - name: Ensure wallpapers directory exists on host
+      ansible.builtin.get_url:
+        url: "{{ wallpaper_url }}"
+        dest: "~{{ ansible_facts.user_id }}/.local/share/backgrounds/"
+        owner: "{{ ansible_facts.user_uid }}"
+        group: "{{ ansible_facts.user_gid }}"
+        mode: 0755
+      register: wallpaper_download
+
+    - name: Set wallpaper
+      community.general.dconf:
+        key: '/org/gnome/desktop/background/picture-uri'
+        value: "'file://{{ wallpaper_download.dest }}'"
+
+    - name: Set dark wallpaper
+      community.general.dconf:
+        key: '/org/gnome/desktop/background/picture-uri-dark'
+        value: "'file://{{ wallpaper_download.dest }}'"
+
+    - name: Set lock screen wallpaper
+      community.general.dconf:
+        key: '/org/gnome/desktop/screensaver/picture-uri'
+        value: "'file://{{ wallpaper_download.dest }}'"

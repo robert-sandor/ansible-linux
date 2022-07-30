@@ -1,0 +1,9 @@
+---
+- name: Install gaming packages using DNF
+  become: true
+  ansible.builtin.dnf:
+    name: "{{ package }}"
+    state: latest
+  with_items: "{{ gaming_packages }}"
+  loop_control:
+    loop_var: package

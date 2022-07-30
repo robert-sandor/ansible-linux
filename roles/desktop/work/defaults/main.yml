@@ -1,0 +1,8 @@
+---
+work_flatpak_apps:
+  - com.slack.Slack
+  - us.zoom.Zoom
+
+work_pinned_apps:
+  - com.slack.Slack
+  - us.zoom.Zoom

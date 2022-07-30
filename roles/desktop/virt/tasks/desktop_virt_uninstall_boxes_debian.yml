@@ -1,0 +1,7 @@
+---
+- name: Install virtualization packages using APT
+  become: true
+  ansible.builtin.apt:
+    pkg: gnome-boxes
+    state: absent
+    autoremove: true

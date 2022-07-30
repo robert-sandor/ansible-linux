@@ -1,0 +1,3 @@
+---
+- ansible.builtin.import_tasks: set_pinned_apps.yml
+- ansible.builtin.include_tasks: set_dock_preferences_{{ ansible_facts.os_family | lower }}.yml

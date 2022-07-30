@@ -1,0 +1,3 @@
+---
+- ansible.builtin.import_tasks: dekstop_work_apps_flatpak.yml
+- ansible.builtin.import_tasks: set_pinned_apps.yml

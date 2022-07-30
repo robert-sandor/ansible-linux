@@ -1,0 +1,7 @@
+---
+- ansible.builtin.import_tasks: ./set_hostname.yml
+- ansible.builtin.include_tasks: ./configure_package_manager_{{ ansible_facts.os_family | lower }}.yml
+- ansible.builtin.include_tasks: ./update_packages_{{ ansible_facts.os_family | lower }}.yml
+- ansible.builtin.include_tasks: ./install_base_packages_{{ ansible_facts.os_family | lower }}.yml
+- ansible.builtin.import_tasks: ./zsh_setup.yml
+- ansible.builtin.import_tasks: ./ssh_setup.yml

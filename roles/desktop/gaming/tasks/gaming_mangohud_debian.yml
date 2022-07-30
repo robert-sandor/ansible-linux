@@ -1,0 +1,6 @@
+---
+- name: Install base packages using APT
+  become: true
+  ansible.builtin.apt:
+    pkg: "{{ gaming_packages }}"
+    state: latest

@@ -1,0 +1,33 @@
+---
+- name: Check if oh-my-zsh already installed
+  ansible.builtin.stat:
+    path: /home/{{ ansible_facts.user_id }}/.oh-my-zsh
+  register: oh_my_zsh_stat
+
+- name: Install oh-my-zsh
+  when: not oh_my_zsh_stat.stat.exists
+  block:
+    - name: Download oh-my-zsh setup script
+      ansible.builtin.get_url:
+        url: https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh
+        dest: /tmp/omz-install.sh
+        mode: 0755
+
+    - name: Install oh-my-zsh
+      ansible.builtin.shell: sh /tmp/omz-install.sh --unattended
+      changed_when: true
+
+    - name: Remove temp install file
+      ansible.builtin.file:
+        path: /tmp/omz-install.sh
+        state: absent
+
+- name: Clone zsh syntax highlighting plugin
+  ansible.builtin.git:
+    repo: https://github.com/zsh-users/zsh-syntax-highlighting.git
+    dest: ~{{ ansible_facts.user_id }}/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
+
+- name: Clone zsh autocomplete plugin
+  ansible.builtin.git:
+    repo: https://github.com/marlonrichert/zsh-autocomplete.git
+    dest: ~{{ ansible_facts.user_id }}/.oh-my-zsh/custom/plugins/zsh-autocomplete

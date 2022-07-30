@@ -1,0 +1,18 @@
+---
+- name: Check for existing flathub repo
+  become: true
+  ansible.builtin.shell: flatpak remotes --columns=name
+  register: flatpak_remotes
+  changed_when: false
+
+- name: Add the flathub repository
+  become: true
+  ansible.builtin.shell: flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+  changed_when: true
+  when: "'flathub' not in flatpak_remotes.stdout_lines"
+
+- name: Ensure flathub repository is enabled
+  become: true
+  ansible.builtin.shell: flatpak remote-modify flathub --enable
+  changed_when: true
+  when: "'flathub' not in flatpak_remotes.stdout_lines"

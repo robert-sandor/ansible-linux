@@ -1,0 +1,5 @@
+---
+- name: Install Gnome Boxes flatpak
+  become: true
+  community.general.flatpak:
+    name: org.gnome.Boxes

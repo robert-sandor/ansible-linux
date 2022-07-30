@@ -1,0 +1,11 @@
+---
+- ansible.builtin.include_tasks: >-
+    dekstop_dev_apps_vscode_{{ ansible_facts.distribution | lower | regex_replace('[^a-z]', '') }}.yml
+
+- name: Install vscode extensions
+  ansible.builtin.shell: code --force --install-extension {{ extension }}
+  register: code_install_extension_output
+  changed_when: "'already installed' not in code_install_extension_output.stdout"
+  with_items: "{{ vscode_extensions }}"
+  loop_control:
+    loop_var: extension

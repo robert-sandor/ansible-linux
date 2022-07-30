@@ -1,0 +1,9 @@
+---
+- ansible.builtin.include_tasks: dekstop_uninstall_packages_{{ ansible_facts.os_family | lower }}.yml
+- ansible.builtin.include_tasks: dekstop_base_packages_{{ ansible_facts.os_family | lower }}.yml
+- ansible.builtin.import_tasks: dekstop_base_packages_flatpak.yml
+- ansible.builtin.import_tasks: dekstop_base_prefs.yml
+- ansible.builtin.import_tasks: desktop_cleanup.yml
+- ansible.builtin.import_tasks: set_pinned_apps.yml
+- ansible.builtin.include_tasks: dekstop_base_ubuntu_locale.yml
+  when: "{{ 'ubuntu' in ansible_facts.distribution | lower | regex_replace('[^a-z]', '') }}"
