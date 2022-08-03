@@ -7,7 +7,7 @@
 
 - name: Ensure SSH key pair is present
   community.crypto.openssh_keypair:
-    path: ~{{ ansible_facts.user_id }}/.ssh/id
+    path: ~{{ ansible_facts.user_id }}/.ssh/id-ed25519
     type: ed25519
     mode: 0600
   register: ssh_keys

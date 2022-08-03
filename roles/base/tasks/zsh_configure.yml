@@ -35,7 +35,7 @@
   ansible.builtin.lineinfile:
     path: "~{{ ansible_facts.user_id }}/.zshrc"
     regexp: '^(#)?(\s)*export EDITOR='
-    line: "export EDITOR=micro"
+    line: "export EDITOR='micro'"
 
 - name: Add ~/.local/bin to PATH
   ansible.builtin.lineinfile:
