@@ -1,4 +1,6 @@
 ---
+brave_browser: absent
+
 pc_flatpak_apps:
   - com.bitwarden.desktop
   - com.discordapp.Discord
@@ -24,10 +26,9 @@ base_pc_packages:
   - v4l-utils
 
 pc_pinned_apps:
-  - brave-browser
+  - "{{ 'org.mozilla.firefox' if 'ubuntu' in ansible_facts.distribution | lower else 'firefox' }}"
   - org.signal.Signal
   - io.github.mimbrero.WhatsAppDesktop
   - com.discordapp.Discord
   - com.spotify.Client
-  - "{{ 'org.mozilla.firefox' if 'ubuntu' in ansible_facts.distribution | lower else 'firefox' }}"
   - google-chrome

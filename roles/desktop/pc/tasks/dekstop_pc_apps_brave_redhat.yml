@@ -1,22 +1,46 @@
 ---
-- name: Import GPG key for Brave Browser
-  become: true
-  ansible.builtin.rpm_key:
-    key: https://brave-browser-rpm-release.s3.brave.com/brave-core.asc
+- name: Install Brave browser
+  when: brave_browser == 'present'
+  block:
+    - name: Import GPG key for Brave Browser
+      become: true
+      ansible.builtin.rpm_key:
+        key: https://brave-browser-rpm-release.s3.brave.com/brave-core.asc
 
-- name: Add Brave Browser Repository
-  become: true
-  ansible.builtin.yum_repository:
-    enabled: true
-    file: brave-browser
-    name: brave-browser
-    description: Brave Browser
-    baseurl: https://brave-browser-rpm-release.s3.brave.com/x86_64/
-    gpgkey: https://brave-browser-rpm-release.s3.brave.com/brave-core.asc
-    gpgcheck: true
+    - name: Add Brave Browser Repository
+      become: true
+      ansible.builtin.yum_repository:
+        enabled: true
+        file: brave-browser
+        name: brave-browser
+        description: Brave Browser
+        baseurl: https://brave-browser-rpm-release.s3.brave.com/x86_64/
+        gpgkey: https://brave-browser-rpm-release.s3.brave.com/brave-core.asc
+        gpgcheck: true
 
-- name: Install Brave Browser with DNF
-  become: true
-  ansible.builtin.dnf:
-    name: brave-browser
-    state: latest
+    - name: Install Brave Browser with DNF
+      become: true
+      ansible.builtin.dnf:
+        name: brave-browser
+        state: latest
+
+- name: Uninstall Brave browser
+  when: brave_browser == 'absent'
+  block:
+    - name: Disable Brave Browser Repository
+      become: true
+      ansible.builtin.yum_repository:
+        enabled: false
+        file: brave-browser
+        name: brave-browser
+        description: Brave Browser
+        baseurl: https://brave-browser-rpm-release.s3.brave.com/x86_64/
+        gpgkey: https://brave-browser-rpm-release.s3.brave.com/brave-core.asc
+        gpgcheck: true
+
+    - name: Uninstall Brave Browser with APT
+      become: true
+      ansible.builtin.dnf:
+        name: brave-browser
+        state: absent
+        autoremove: true
