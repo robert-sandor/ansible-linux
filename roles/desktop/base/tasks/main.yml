@@ -5,5 +5,9 @@
 - ansible.builtin.import_tasks: dekstop_base_prefs.yml
 - ansible.builtin.import_tasks: desktop_cleanup.yml
 - ansible.builtin.import_tasks: set_pinned_apps.yml
-- ansible.builtin.include_tasks: dekstop_base_ubuntu_locale.yml
-  when: "{{ 'ubuntu' in ansible_facts.distribution | lower | regex_replace('[^a-z]', '') }}"
+
+- ansible.builtin.include_tasks: "{{ item }}"
+  with_first_found:
+    - files:
+        - desktop_base_locale_{{ ansible_facts.distribution | lower | regex_replace('[^a-z]', '') }}.yml
+      skip: true

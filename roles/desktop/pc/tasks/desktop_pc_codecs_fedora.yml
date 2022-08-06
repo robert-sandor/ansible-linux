@@ -1,0 +1,24 @@
+---
+- name: Install RPMFusion Repos
+  become: true
+  ansible.builtin.dnf:
+    name:
+      - "https://mirrors.rpmfusion.org/free/fedora/\
+        rpmfusion-free-release-{{ ansible_facts.distribution_version }}.noarch.rpm"
+      - "https://mirrors.rpmfusion.org/nonfree/fedora/\
+        rpmfusion-nonfree-release-{{ ansible_facts.distribution_version }}.noarch.rpm"
+    state: latest
+    disable_gpg_check: true
+
+- name: Install multimedia group
+  become: true
+  ansible.builtin.dnf:
+    name: '@multimedia'
+    state: latest
+    install_weak_deps: false
+
+- name: Install sound-and-video group
+  become: true
+  ansible.builtin.dnf:
+    name: '@sound-and-video'
+    state: latest

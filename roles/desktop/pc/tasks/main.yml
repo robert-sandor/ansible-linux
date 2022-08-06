@@ -1,7 +1,14 @@
 ---
-- ansible.builtin.import_tasks: dekstop_pc_apps_flatpak.yml
-- ansible.builtin.include_tasks: dekstop_pc_apps_{{ ansible_facts.os_family | lower }}.yml
-- ansible.builtin.include_tasks: dekstop_pc_apps_brave_{{ ansible_facts.os_family | lower }}.yml
-- ansible.builtin.include_tasks: >-
-    dekstop_pc_apps_chrome_{{ ansible_facts.distribution | lower | regex_replace('[^a-z]', '') }}.yml
-- ansible.builtin.import_tasks: set_pinned_apps.yml
+# - ansible.builtin.import_tasks: dekstop_pc_apps_flatpak.yml
+# - ansible.builtin.include_tasks: dekstop_pc_apps_{{ ansible_facts.os_family | lower }}.yml
+# - ansible.builtin.include_tasks: dekstop_pc_apps_brave_{{ ansible_facts.os_family | lower }}.yml
+# - ansible.builtin.include_tasks: >-
+#     dekstop_pc_apps_chrome_{{ ansible_facts.distribution | lower | regex_replace('[^a-z]', '') }}.yml
+
+- ansible.builtin.include_tasks: "{{ item }}"
+  with_first_found:
+    - files:
+        - desktop_pc_codecs_{{ ansible_facts.distribution | lower | regex_replace('[^a-z]', '') }}.yml
+      skip: true
+
+# - ansible.builtin.import_tasks: set_pinned_apps.yml

@@ -23,12 +23,9 @@
 - name: Install base packages using DNF
   become: true
   ansible.builtin.dnf:
-    name: "{{ package }}"
+    name:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+      - docker-compose-plugin
     state: latest
-  loop_control:
-    loop_var: package
-  with_items:
-    - docker-ce
-    - docker-ce-cli
-    - containerd.io
-    - docker-compose-plugin
