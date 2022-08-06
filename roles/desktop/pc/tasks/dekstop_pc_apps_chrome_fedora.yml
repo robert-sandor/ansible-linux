@@ -1,22 +1,46 @@
 ---
-- name: Import GPG key for Chrome
-  become: true
-  ansible.builtin.rpm_key:
-    key: https://dl.google.com/linux/linux_signing_key.pub
+- name: Install Chrome
+  when: chrome_browser == 'present'
+  block:
+    - name: Import GPG key for Chrome
+      become: true
+      ansible.builtin.rpm_key:
+        key: https://dl.google.com/linux/linux_signing_key.pub
 
-- name: Add Chrome Repository
-  become: true
-  ansible.builtin.yum_repository:
-    enabled: true
-    file: google-chrome
-    name: google-chrome
-    description: Google Chrome Browser
-    baseurl: https://dl.google.com/linux/chrome/rpm/stable/x86_64
-    gpgkey: https://dl.google.com/linux/linux_signing_key.pub
-    gpgcheck: true
+    - name: Add Chrome Repository
+      become: true
+      ansible.builtin.yum_repository:
+        enabled: true
+        file: google-chrome
+        name: google-chrome
+        description: Google Chrome Browser
+        baseurl: https://dl.google.com/linux/chrome/rpm/stable/x86_64
+        gpgkey: https://dl.google.com/linux/linux_signing_key.pub
+        gpgcheck: true
 
-- name: Install Chrome with DNF
-  become: true
-  ansible.builtin.dnf:
-    name: google-chrome-stable
-    state: latest
+    - name: Install Chrome with DNF
+      become: true
+      ansible.builtin.dnf:
+        name: google-chrome-stable
+        state: latest
+
+- name: Uninstall Chrome
+  when: chrome_browser == 'absent'
+  block:
+    - name: Disable Chrome Repository
+      become: true
+      ansible.builtin.yum_repository:
+        enabled: false
+        file: google-chrome
+        name: google-chrome
+        description: Google Chrome Browser
+        baseurl: https://dl.google.com/linux/chrome/rpm/stable/x86_64
+        gpgkey: https://dl.google.com/linux/linux_signing_key.pub
+        gpgcheck: true
+
+    - name: Uninstall Chrome with APT
+      become: true
+      ansible.builtin.dnf:
+        name: google-chrome-stable
+        state: absent
+        autoremove: true

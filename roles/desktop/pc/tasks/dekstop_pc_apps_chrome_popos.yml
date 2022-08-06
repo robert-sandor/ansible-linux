@@ -3,4 +3,4 @@
   become: true
   ansible.builtin.apt:
     name: google-chrome-stable
-    state: latest
+    state: "{{ 'latest' if chrome_browser == 'present' else 'absent' }}"

@@ -51,7 +51,8 @@
     repo: >-
       deb [arch={{ 'amd64' if 'x86_64' in ansible_facts.architecture else 'arm64' }}
       signed-by=/etc/apt/keyrings/docker.gpg]
-      https://download.docker.com/linux/ubuntu {{ ansible_facts.distribution_release }} stable
+      https://download.docker.com/linux/{{ 'debian' if ansible_facts.distribution | lower == 'debian' else 'ubuntu' }}
+      {{ ansible_facts.distribution_release }} stable
     state: present
     filename: docker
 

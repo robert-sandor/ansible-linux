@@ -1,7 +1,7 @@
 ---
 - name: Check if SDKMAN already installed
   ansible.builtin.stat:
-    path: /home/{{ ansible_facts.user_id }}/.sdkman
+    path: ~{{ ansible_facts.user_id }}/.sdkman
   register: sdkman_stat
 
 - name: Install SDKMAN
@@ -24,19 +24,19 @@
 
 - name: Make SDKMAN auto answer install and update queries
   ansible.builtin.lineinfile:
-    path: /home/{{ ansible_facts.user_id }}/.sdkman/etc/config
+    path: ~{{ ansible_facts.user_id }}/.sdkman/etc/config
     regexp: '^sdkman_auto_answer='
     line: 'sdkman_auto_answer=true'
 
 - name: Make SDKMAN selfupdate
   ansible.builtin.lineinfile:
-    path: /home/{{ ansible_facts.user_id }}/.sdkman/etc/config
+    path: ~{{ ansible_facts.user_id }}/.sdkman/etc/config
     regexp: '^sdkman_selfupdate_enable='
     line: 'sdkman_selfupdate_enable=true'
 
 - name: Install SDKMAN candidates
   ansible.builtin.shell: >
-    . /home/{{ ansible_facts.user_id }}/.sdkman/bin/sdkman-init.sh &&
+    . ~{{ ansible_facts.user_id }}/.sdkman/bin/sdkman-init.sh &&
     sdk install {{ item.name }} {{ item.version | default('') }}
   with_items: "{{ sdkman_install_candidates }}"
   when: sdkman_install_candidates is defined

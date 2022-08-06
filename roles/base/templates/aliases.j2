@@ -25,3 +25,9 @@ alias du="ncdu"
 # Some docker aliases
 docstop="docker stop $(docker ps -aq)"
 docclean="docker rm -f $(docker ps -aq)"
+
+{% if custom_aliases is defined %}
+{% for alias in custom_aliases | dict2items %}
+{{ alias.key }}="{{ alias.value }}"
+{% endfor %}
+{% endif %}
